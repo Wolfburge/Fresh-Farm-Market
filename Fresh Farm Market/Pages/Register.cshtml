@@ -1,0 +1,146 @@
+﻿@page
+@model Fresh_Farm_Market.Pages.RegisterModel
+@{
+}
+<div class="container mt-5">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<div class="row justify-content-center align-items-center">
+
+		<div class="col-sm-12 col-md-12 col-lg-4">
+			<h1 class="mb-3">Register </h1>
+
+			<form method="post" enctype="multipart/form-data" asp-antiforgery="true">
+				<div asp-validation-summary="All" class="text-danger"></div>
+
+				<div class="mb-3">
+					<label class="form-label" asp-for="RModel.Email">Email Address</label>
+					<input type="Text" asp-for="RModel.Email" class="form-control" />
+					<span asp-validaton-for="RModel.Email" class="text-danger"></span>
+				</div>
+
+				<div class="mb-3">
+					<label class="form-label" asp-for="RModel.Password">Password</label>
+					<input type="Password" asp-for="RModel.Password" class="form-control" id="password" />
+					<span asp-validaton-for="RModel.Password" class="text-danger"></span>
+				</div>
+
+				<div id="password-strength"></div>
+
+				<div class="mb-3">
+					<label class="form-label" asp-for="RModel.ConfirmPassword">Confirm Password</label>
+					<input type="Password" asp-for="RModel.ConfirmPassword" class="form-control" />
+					<span asp-validaton-for="RModel.ConfirmPassword" class="text-danger"></span>
+				</div>
+
+				<div class="mb-3">
+					<label class="form-label" asp-for="RModel.FullName">Full Name</label>
+					<input type="Text" asp-for="RModel.FullName" class="form-control" />
+					<span asp-validaton-for="RModel.FullName" class="text-danger"></span>
+				</div>
+
+				<div class="mb-3">
+					<label class="form-label" asp-for="RModel.CreditCard">Credit Card</label>
+					<input type="Text" asp-for="RModel.CreditCard" class="form-control" />
+					<span asp-validaton-for="RModel.CreditCard" class="text-danger"></span>
+				</div>
+
+				<div class="mb-3">
+					<label class="form-label" asp-for="RModel.Gender">Gender</label>
+					<input type="Text" asp-for="RModel.Gender" class="form-control" />
+					<span asp-validaton-for="RModel.Gender" class="text-danger"></span>
+				</div>
+
+				<div class="mb-3">
+					<label class="form-label" asp-for="RModel.DeliveryAddress">Delivery Address</label>
+					<input type="Text" asp-for="RModel.DeliveryAddress" class="form-control" />
+					<span asp-validaton-for="RModel.DeliveryAddress" class="text-danger"></span>
+				</div>
+
+				<div class="mb-3">
+					<label class="form-label" asp-for="RModel.Photo">Photo (JPG only)</label>
+					<input typefile="Text" asp-for="RModel.Photo" class="form-control" accept=".jpg" />
+					<span asp-validaton-for="RModel.PhotoURL" class="text-danger"></span>
+				</div>
+
+				<div class="mb-3">
+					<label class="form-label" asp-for="RModel.AboutMe">About Me</label>
+					<input type="Text" asp-for="RModel.AboutMe" class="form-control" />
+					<span asp-validaton-for="RModel.AboutMe" class="text-danger"></span>
+				</div>
+
+				<div class="mb-3">
+					<label class="form-label" asp-for="RModel.PhoneNumber">Mobile Number</label>
+					<input type="Text" asp-for="RModel.PhoneNumber" class="form-control" />
+					<span asp-validaton-for="RModel.MobileNumber" class="text-danger"></span>
+				</div>
+
+
+				<div class="mb-3">
+					<button type="submit" class="btn btn-primary">Register</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<script>
+	$(document).ready(function () {
+		$("#password").on("input", function () {
+			var password = $(this).val();
+			var strength = checkPasswordStrength(password);
+			displayPasswordStrength(strength);
+		});
+
+		function checkPasswordStrength(password) {
+			// Minimum length requirement
+			var minLength = 8;
+
+			// Regular expressions to check for different aspects of password strength
+			var regexLower = /[a-z]/;
+			var regexUpper = /[A-Z]/;
+			var regexDigit = /\d/;
+			var regexSpecial = /[^\da-zA-Z]/;
+
+			// Check minimum length
+			if (password.length < minLength) {
+				return 0; // Weak
+			}
+
+			// Check for lowercase, uppercase, digit, and special character
+			var hasLower = regexLower.test(password);
+			var hasUpper = regexUpper.test(password);
+			var hasDigit = regexDigit.test(password);
+			var hasSpecial = regexSpecial.test(password);
+
+			// Assign a score based on the presence of different character types
+			var score = (hasLower ? 1 : 0) + (hasUpper ? 1 : 0) + (hasDigit ? 1 : 0) + (hasSpecial ? 1 : 0);
+
+			// Return the password strength level
+			if (score < 2) {
+				return 0; // Weak
+			} else if (score < 4) {
+				return 1; // Medium
+			} else {
+				return 2; // Strong
+			}
+		}
+		function displayPasswordStrength(strength) {
+			var indicator = $("#password-strength");
+			indicator.removeClass();
+
+			switch (strength) {
+				case 0:
+					indicator.text("Weak").addClass("text-danger");
+					break;
+				case 1:
+					indicator.text("Medium").addClass("text-warning");
+					break;
+				case 2:
+					indicator.text("Strong").addClass("text-success");
+					break;
+				default:
+					indicator.text("");
+					break;
+			}
+		}
+	});
+</script>
